@@ -1,5 +1,6 @@
 import { skills } from '../data/profile.js'
 import SectionHead from './SectionHead.jsx'
+import ScrollStack, { ScrollStackItem } from './Effects/ScrollStack.jsx'
 
 export default function Skills() {
   return (
@@ -14,13 +15,25 @@ export default function Skills() {
           verticalZh="慢慢地，积累下去。"
         />
 
-        <div className="skills__grid">
+        <div className="skills-stack">
+          <ScrollStack
+            className="skills-stack-scroller"
+            useWindowScroll
+            itemDistance={140}
+            itemScale={0.02}
+            itemStackDistance={52}
+            stackPosition="18%"
+            scaleEndPosition="8%"
+            baseScale={0.88}
+            rotationAmount={0}
+            blurAmount={1.2}
+          >
           {skills.map((skill, index) => (
-            <article
-              className="skill-card"
+            <ScrollStackItem
               key={skill.ja}
-              data-reveal
-              data-reveal-delay={String(index * 0.09)}
+              itemClassName={`skill-card skill-stack-card skill-card--${
+                index + 1
+              }`}
             >
               <header className="skill-card__head">
                 <span className="skill-card__no">
@@ -37,8 +50,9 @@ export default function Skills() {
                   <li key={point}>{point}</li>
                 ))}
               </ul>
-            </article>
+            </ScrollStackItem>
           ))}
+          </ScrollStack>
         </div>
       </div>
     </section>

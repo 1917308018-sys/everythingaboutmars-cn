@@ -1137,39 +1137,44 @@ button {
 
 /* ---------- Skills / 力 ---------- */
 
-.skills__grid {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: clamp(24px, 2.4vw, 44px);
-  row-gap: clamp(56px, 7vw, 110px);
+.skills-stack {
+  max-width: min(940px, 100%);
+  margin-inline: auto;
+}
+
+.skills-stack .scroll-stack-scroller {
+  position: relative;
+  height: auto;
+  overflow: visible;
+  overscroll-behavior: auto;
+}
+
+.skills-stack .scroll-stack-inner {
+  padding-top: clamp(28px, 4vh, 64px);
+}
+
+.skill-card.skill-stack-card {
+  min-height: 420px;
+  background: var(--bg);
+  border: 0.5px solid var(--line);
+  border-radius: 2px;
+}
+
+.skill-card.skill-stack-card .skill-card__desc {
+  max-width: 560px;
+}
+
+.skill-card.skill-stack-card:last-child {
+  margin-bottom: clamp(760px, 130vh, 1300px);
 }
 
 .skill-card {
   display: flex;
   flex-direction: column;
-  min-height: 360px;
   padding: clamp(30px, 2.8vw, 52px);
-  border: 0.5px solid var(--line);
-  border-radius: 2px;
   transition:
     border-color 0.5s var(--ease-out),
     background-color 0.5s var(--ease-out);
-}
-
-.skill-card:nth-child(1) {
-  grid-column: 1 / span 5;
-}
-
-.skill-card:nth-child(2) {
-  grid-column: 7 / span 6;
-}
-
-.skill-card:nth-child(3) {
-  grid-column: 2 / span 5;
-}
-
-.skill-card:nth-child(4) {
-  grid-column: 8 / span 5;
 }
 
 .skill-card:hover {
@@ -1502,19 +1507,6 @@ button {
   .project--right .project__info {
     grid-column: auto;
     margin-top: 36px;
-  }
-
-  .skills__grid {
-    grid-template-columns: 1fr;
-  }
-
-  .skill-card,
-  .skill-card:nth-child(1),
-  .skill-card:nth-child(2),
-  .skill-card:nth-child(3),
-  .skill-card:nth-child(4) {
-    grid-column: auto;
-    min-height: 300px;
   }
 
   .contact__links {
