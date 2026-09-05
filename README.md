@@ -33,6 +33,20 @@ npm run preview
 - 大陆地区使用阿里云 CDN / OSS 自定义域名前需先完成 ICP 备案
 - 在阿里云云解析 DNS 控制台添加域名解析到托管服务（OSS 自定义域名一般用 CNAME 指向 CDN 域名）
 
+## 持续更新（GitHub Pages）
+
+代码已推送至 GitHub 仓库 `1917308018-sys/everythingaboutmars-cn`，并配置了
+`main` 分支推送即自动部署的 GitHub Actions 工作流：
+
+```bash
+git add .
+git commit -m "update: 描述本次改动"
+git push origin main
+```
+
+推送完成后，Actions 会自动构建 `dist/` 并发布到 `gh-pages` 分支，
+线上网址约一分钟后更新：[https://1917308018-sys.github.io/everythingaboutmars-cn/](https://1917308018-sys.github.io/everythingaboutmars-cn/)
+
 ## 内容替换
 
 - 所有个人信息、经历、项目、能力都集中在 `src/data/profile.js`（当前内容来自《简历1》）
