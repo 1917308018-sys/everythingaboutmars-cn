@@ -18,7 +18,12 @@ export default function About() {
           <figure className="about__figure" data-reveal>
             <div className="frame about__portrait" aria-label="人物照片">
               {profile.photo ? (
-                <img src={asset(profile.photo)} alt={`${profile.nameZh} 的照片`} />
+                <img
+                  src={asset(profile.photo)}
+                  alt={`${profile.nameZh} 的照片`}
+                  loading="lazy"
+                  decoding="async"
+                />
               ) : (
                 <div className="ph portrait-ph" role="img" aria-label="人物照片占位">
                   <span className="ph__char" aria-hidden="true">

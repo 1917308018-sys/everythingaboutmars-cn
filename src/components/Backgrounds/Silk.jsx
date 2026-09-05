@@ -2,7 +2,14 @@
 // https://reactbits.dev — adapted to this project's JSX setup.
 /* eslint-disable react/no-unknown-property */
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { forwardRef, useEffect, useLayoutEffect, useMemo, useRef } from 'react'
+import {
+  forwardRef,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import { Color } from 'three'
 
 const hexToNormalizedRGB = hex => {
@@ -110,6 +117,44 @@ const SilkPlane = forwardRef(function SilkPlane({ uniforms }, ref) {
 })
 SilkPlane.displayName = 'SilkPlane'
 
+function MotionControl({ active }) {
+  const setFrameloop = useThree((state) => state.setFrameloop)
+
+  useLayoutEffect(() => {
+    setFrameloop(active ? 'always' : 'never')
+  }, [active, setFrameloop])
+
+  return null
+}
+
+function useMotionActive() {
+  const [active, setActive] = useState(() => {
+    if (typeof window === 'undefined') return true
+    return (
+      !window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
+      !document.hidden
+    )
+  })
+
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const update = () => {
+      setActive(!mq.matches && !document.hidden)
+    }
+
+    update()
+    document.addEventListener('visibilitychange', update)
+    mq.addEventListener?.('change', update)
+
+    return () => {
+      document.removeEventListener('visibilitychange', update)
+      mq.removeEventListener?.('change', update)
+    }
+  }, [])
+
+  return active
+}
+
 const Silk = ({
   speed = 5,
   scale = 1,
@@ -119,6 +164,7 @@ const Silk = ({
   lightMode = false,
 }) => {
   const meshRef = useRef()
+  const active = useMotionActive()
 
   const uniforms = useMemo(
     () => ({
@@ -144,7 +190,8 @@ const Silk = ({
   }, [speed, scale, noiseIntensity, color, rotation, lightMode, uniforms])
 
   return (
-    <Canvas dpr={[1, 2]} frameloop="always">
+    <Canvas dpr={[1, 1.5]}>
+      <MotionControl active={active} />
       <SilkPlane ref={meshRef} uniforms={uniforms} />
     </Canvas>
   )

@@ -22,15 +22,16 @@ export default function Projects() {
                 className={`project${index % 2 === 1 ? ' project--right' : ''}`}
                 key={project.no}
               >
-                <a
+                <div
                   className={`project__media frame project__media--${project.ratioClass}`}
-                  href="#projects"
                   data-reveal
                 >
                   {project.image ? (
                     <img
                       src={asset(project.image)}
                       alt={`${project.titleZh} 配图`}
+                      loading="lazy"
+                      decoding="async"
                     />
                   ) : (
                     <div
@@ -46,7 +47,7 @@ export default function Projects() {
                       </span>
                     </div>
                   )}
-                </a>
+                </div>
 
                 <div
                   className="project__info"
@@ -57,9 +58,7 @@ export default function Projects() {
                     {project.no} / {project.year}
                   </p>
                   <h3 className="project__title">
-                    <a className="link-line" href="#projects">
-                      {project.title}
-                    </a>
+                    <span className="project__title-ja">{project.title}</span>
                     <span className="project__title-zh">{project.titleZh}</span>
                   </h3>
                   <p className="project__role">
