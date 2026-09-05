@@ -19,14 +19,14 @@ export default function Skills() {
           <ScrollStack
             className="skills-stack-scroller"
             useWindowScroll
-            itemDistance={140}
+            itemDistance={100}
             itemScale={0.02}
-            itemStackDistance={52}
+            itemStackDistance={40}
             stackPosition="18%"
             scaleEndPosition="8%"
-            baseScale={0.88}
+            baseScale={0.78}
             rotationAmount={0}
-            blurAmount={1.2}
+            blurAmount={0}
           >
           {skills.map((skill, index) => (
             <ScrollStackItem
