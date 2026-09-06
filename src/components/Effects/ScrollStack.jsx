@@ -27,6 +27,8 @@ const ScrollStack = ({
   const scrollerRef = useRef(null)
   const stackCompletedRef = useRef(false)
   const animationFrameRef = useRef(null)
+  const animatedScrollRef = useRef(0)
+  const targetScrollRef = useRef(0)
   const cardsRef = useRef([])
   const lastTransformsRef = useRef(new Map())
   const isUpdatingRef = useRef(false)
@@ -47,7 +49,7 @@ const ScrollStack = ({
   const getScrollData = useCallback(() => {
     if (useWindowScroll) {
       return {
-        scrollTop: window.scrollY,
+        scrollTop: animatedScrollRef.current,
         containerHeight: window.innerHeight,
         scrollContainer: document.documentElement,
       }
@@ -55,7 +57,7 @@ const ScrollStack = ({
 
     const scroller = scrollerRef.current
     return {
-      scrollTop: scroller.scrollTop,
+      scrollTop: animatedScrollRef.current,
       containerHeight: scroller.clientHeight,
       scrollContainer: scroller,
     }
@@ -192,12 +194,34 @@ const ScrollStack = ({
   ])
 
   const handleScroll = useCallback(() => {
+    targetScrollRef.current = useWindowScroll
+      ? window.scrollY
+      : scrollerRef.current?.scrollTop || 0
+
     if (animationFrameRef.current) return
-    animationFrameRef.current = requestAnimationFrame(() => {
-      animationFrameRef.current = null
+
+    const animate = () => {
+      const target = targetScrollRef.current
+      const current = animatedScrollRef.current
+      const next = current + (target - current) * 0.16
+
+      if (Math.abs(next - target) < 0.05) {
+        animatedScrollRef.current = target
+      } else {
+        animatedScrollRef.current = next
+      }
+
       updateCardTransforms()
-    })
-  }, [updateCardTransforms])
+
+      if (Math.abs(animatedScrollRef.current - target) > 0.05) {
+        animationFrameRef.current = requestAnimationFrame(animate)
+      } else {
+        animationFrameRef.current = null
+      }
+    }
+
+    animationFrameRef.current = requestAnimationFrame(animate)
+  }, [useWindowScroll, updateCardTransforms])
 
   useLayoutEffect(() => {
     const scroller = scrollerRef.current
@@ -230,8 +254,20 @@ const ScrollStack = ({
         ? window
         : scroller
 
+    targetScrollRef.current = useWindowScroll
+      ? window.scrollY
+      : scroller.scrollTop
+    animatedScrollRef.current = targetScrollRef.current
+
     target.addEventListener('scroll', handleScroll, { passive: true })
-    window.addEventListener('resize', handleScroll)
+    const handleResize = () => {
+      targetScrollRef.current = useWindowScroll
+        ? window.scrollY
+        : scroller.scrollTop
+      animatedScrollRef.current = targetScrollRef.current
+      updateCardTransforms()
+    }
+    window.addEventListener('resize', handleResize)
     updateCardTransforms()
 
     return () => {
@@ -240,7 +276,7 @@ const ScrollStack = ({
         animationFrameRef.current = null
       }
       target.removeEventListener('scroll', handleScroll)
-      window.removeEventListener('resize', handleScroll)
+      window.removeEventListener('resize', handleResize)
       stackCompletedRef.current = false
       cardsRef.current = []
       transformsCache.clear()
