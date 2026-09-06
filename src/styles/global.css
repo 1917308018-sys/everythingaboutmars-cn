@@ -764,8 +764,10 @@ button {
   column-gap: clamp(28px, 3vw, 56px);
 }
 
-.about__figure {
+.about__left {
   grid-column: 1 / 6;
+  display: flex;
+  flex-direction: column;
 }
 
 .about__portrait {
@@ -779,6 +781,113 @@ button {
   font-size: 9px;
   letter-spacing: 0.32em;
   color: var(--ink-faint);
+}
+
+.about__interest-zone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 420px;
+  margin-top: clamp(40px, 8vh, 110px);
+}
+
+/* ---------- Bubble menu（兴趣标签） ---------- */
+
+.bubble-menu-zone {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 380px;
+  height: 360px;
+}
+
+.bubble-menu__trigger {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: clamp(128px, 11vw, 150px);
+  aspect-ratio: 1;
+  border: 0.5px solid var(--ink);
+  border-radius: 50%;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  line-height: 1.9;
+  text-align: center;
+  transition:
+    background-color 0.5s var(--ease-out),
+    color 0.5s var(--ease-out),
+    border-color 0.5s var(--ease-out);
+}
+
+.bubble-menu__trigger span {
+  display: block;
+}
+
+.bubble-menu__trigger:hover {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.bubble-menu__list {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bubble-menu__item {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.12);
+  transition:
+    transform 0.75s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.45s var(--ease-out);
+  transition-delay: var(--out-d, 0s);
+  will-change: transform, opacity;
+}
+
+.bubble-menu-zone.is-open .bubble-menu__item {
+  opacity: 1;
+  transform: translate(calc(-50% + var(--bx)), calc(-50% + var(--by)))
+    scale(1);
+  transition-delay: var(--in-d, 0s);
+}
+
+.bubble-menu__item span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 76px;
+  height: 38px;
+  padding-inline: 18px;
+  border: 0.5px solid var(--line);
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  white-space: nowrap;
+  transition:
+    background-color 0.5s var(--ease-out),
+    color 0.5s var(--ease-out),
+    border-color 0.5s var(--ease-out);
+}
+
+.bubble-menu__item span:hover {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
 }
 
 .about__body {
@@ -1396,6 +1505,7 @@ button {
     grid-template-columns: repeat(2, 1fr);
   }
 
+  .about__left,
   .about__figure {
     grid-column: auto;
   }
@@ -1478,6 +1588,7 @@ button {
     grid-template-columns: 1fr;
   }
 
+  .about__left,
   .about__figure {
     max-width: 420px;
   }

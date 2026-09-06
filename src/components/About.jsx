@@ -1,5 +1,6 @@
 import { asset, profile, contacts, stats, education } from '../data/profile.js'
 import SectionHead from './SectionHead.jsx'
+import BubbleMenu from './Effects/BubbleMenu.jsx'
 
 export default function About() {
   return (
@@ -15,31 +16,41 @@ export default function About() {
         />
 
         <div className="about__grid">
-          <figure className="about__figure" data-reveal>
-            <div className="frame about__portrait" aria-label="人物照片">
-              {profile.photo ? (
-                <img
-                  src={asset(profile.photo)}
-                  alt={`${profile.nameZh} 的照片`}
-                  loading="lazy"
-                  decoding="async"
-                />
-              ) : (
-                <div className="ph portrait-ph" role="img" aria-label="人物照片占位">
-                  <span className="ph__char" aria-hidden="true">
-                    学
-                  </span>
-                  <span className="ph__rule ph__rule--v" aria-hidden="true" />
-                  <span className="ph__rule ph__rule--h" aria-hidden="true" />
-                  <span className="ph__label">馬蘇 / PORTRAIT</span>
-                </div>
-              )}
+          <div className="about__left">
+            <figure className="about__figure" data-reveal>
+              <div className="frame about__portrait" aria-label="人物照片">
+                {profile.photo ? (
+                  <img
+                    src={asset(profile.photo)}
+                    alt={`${profile.nameZh} 的照片`}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                ) : (
+                  <div
+                    className="ph portrait-ph"
+                    role="img"
+                    aria-label="人物照片占位"
+                  >
+                    <span className="ph__char" aria-hidden="true">
+                      学
+                    </span>
+                    <span className="ph__rule ph__rule--v" aria-hidden="true" />
+                    <span className="ph__rule ph__rule--h" aria-hidden="true" />
+                    <span className="ph__label">馬蘇 / PORTRAIT</span>
+                  </div>
+                )}
+              </div>
+              <figcaption className="about__figure-cap">
+                <span>PHOTO — 本人照待替换</span>
+                <span>GUANGDONG · 2026</span>
+              </figcaption>
+            </figure>
+
+            <div className="about__interest-zone">
+              <BubbleMenu />
             </div>
-            <figcaption className="about__figure-cap">
-              <span>PHOTO — 本人照待替换</span>
-              <span>GUANGDONG · 2026</span>
-            </figcaption>
-          </figure>
+          </div>
 
           <div className="about__body">
             <p className="about__lead" data-reveal>
